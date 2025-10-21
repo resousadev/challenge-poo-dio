@@ -2,15 +2,21 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.6'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'java-library'
+    id 'maven-publish'
 }
 
 group = 'io.resousadev'
 version = '1.0-SNAPSHOT'
+description = 'Challenge POO DIO - Spring Boot Application'
+sourceCompatibility = '21'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 configurations {
@@ -24,12 +30,54 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    // Spring Boot starters
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    
+    // DevTools for development
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    
+    // Configuration processor
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    
+    // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+// Configurações de compilação
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += [
+        '-parameters',
+        '-Xlint:all',
+        '-Xlint:-processing'
+    ]
+}
+
+// Configuração do JAR
+jar {
+    enabled = false
+    archiveClassifier = ''
+}
+
+// Configuração do bootJar
+bootJar {
+    archiveFileName = "${project.name}-${project.version}.jar"
+    mainClass = 'io.resousadev.Main'
 }
 
