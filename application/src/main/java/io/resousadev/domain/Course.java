@@ -1,8 +1,8 @@
 package io.resousadev.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -10,14 +10,22 @@ import lombok.NoArgsConstructor;
  * Demonstra o uso do Lombok e conceitos de POO.
  */
 @Data
-@Builder
+@EqualsAndHashCode(callSuper = true) // Inclui campos da superclasse na comparação de igualdade
 @NoArgsConstructor
-@AllArgsConstructor
-public class Course {
+public class Course extends Content {
 
-    private String title;
-    private String description;
     private Integer workload;
+
+    @Builder
+    public Course(String title, String description, Integer workload) {
+        super(title, description);
+        this.workload = workload;
+    }
+
+    @Override
+    public double calculateXp() {
+        return workload != null ? DEFAULT_XP * workload : 0.0;
+    }
 
     /**
      * Calcula a duração em dias assumindo 8 horas de estudo por dia.
