@@ -1,26 +1,26 @@
 package io.resousadev.domain;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Entidade que representa um curso no sistema.
- * Demonstra o uso do Lombok e conceitos de POO.
+ * Demonstra o uso do Lombok e conceitos de POO com herança de Content.
  */
 @Data
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true) // Inclui campos da superclasse na comparação de igualdade
 @NoArgsConstructor
+@AllArgsConstructor
 public class Course extends Content {
 
+    /**
+     * Carga horária do curso em horas.
+     */
     private Integer workload;
-
-    @Builder
-    public Course(String title, String description, Integer workload) {
-        super(title, description);
-        this.workload = workload;
-    }
 
     @Override
     public double calculateXp() {
