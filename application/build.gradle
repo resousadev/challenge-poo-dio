@@ -9,12 +9,13 @@ plugins {
 group = 'io.resousadev'
 version = '1.0-SNAPSHOT'
 description = 'Challenge POO DIO - Spring Boot Application'
-sourceCompatibility = '21'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
     withJavadocJar()
     withSourcesJar()
 }
@@ -60,7 +61,7 @@ tasks.named('test') {
 }
 
 // Configurações de compilação
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.compilerArgs += [
         '-parameters',
